@@ -1,0 +1,70 @@
+---
+import ServiceCard from '../ServiceCard.astro';
+import Container from '../ui/Container.astro';
+import Section from '../ui/Section.astro';
+import { atendimentosContent } from '../../content/atendimentos';
+
+const { heading, services } = atendimentosContent;
+---
+
+<Section id="atendimentos" dataSectionId="atendimentos">
+  <Container class="services__container">
+    <h2 id="atendimentos-title" class="services__heading">{heading}</h2>
+
+    <div class="services__grid">
+      {
+        services.map((service) => (
+          <ServiceCard
+            id={service.id}
+            title={service.title}
+            description={service.paragraphs}
+            ctaLabel={service.ctaLabel}
+            ctaHref={service.ctaHref}
+            serviceName={service.title}
+          />
+        ))
+      }
+    </div>
+  </Container>
+</Section>
+
+<style>
+  .services__container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-block);
+  }
+
+  .services__heading {
+    margin: 0;
+    max-width: var(--content-max);
+    font-family: var(--font-heading);
+    font-size: var(--font-size-h2);
+    font-weight: 500;
+    line-height: var(--line-height-heading);
+    color: var(--color-brand-primary);
+    text-wrap: balance;
+  }
+
+  .services__grid {
+    display: grid;
+    gap: var(--space-block);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .services__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .services__grid > :first-child {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .services__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
