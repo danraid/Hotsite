@@ -9,11 +9,7 @@ interface Props {
 const { href, label, variant = 'inline', class: className } = Astro.props;
 ---
 
-<a
-  href={href}
-  class:list={['nav-link', `nav-link--${variant}`, className]}
-  data-nav-label={label}
->
+<a href={href} class:list={['nav-link', `nav-link--${variant}`, className]} data-nav-label={label}>
   {label}
 </a>
 
