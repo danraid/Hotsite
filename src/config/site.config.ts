@@ -18,6 +18,8 @@ export interface NavItem {
 
 export interface SiteConfig {
   siteName: string;
+  /** URL externa de calendário de vivências; quando ausente, CTA usa âncora #vivencias */
+  workshopsUrl?: string;
   primaryCta: CtaLink;
   whatsapp: {
     number: string;

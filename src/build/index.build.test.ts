@@ -27,4 +27,30 @@ describe('index build output', () => {
     expect(sobreSection).toMatch(/<h2[^>]*id="sobre-title"/);
     expect(sobreSection).not.toContain('<img');
   });
+
+  it('renderiza seção atendimentos com três cards e copy do inventário', () => {
+    const html = readBuiltIndexHtml();
+
+    expect(html).toContain('id="atendimentos"');
+    expect(html).toContain('data-section-id="atendimentos"');
+    expect(html).toContain('Caminhos diferentes para momentos distintos');
+    expect(html).toContain('id="atendimento-individual"');
+    expect(html).toContain('id="constelacao-familiar"');
+    expect(html).toContain('id="vivencias"');
+    expect(html).toContain('Conhecer o atendimento individual');
+    expect(html).toContain('Conhecer a Constelação Familiar');
+    expect(html).toContain('Conhecer as próximas vivências');
+  });
+
+  it('mantém hierarquia semântica com article e h3 por serviço', () => {
+    const html = readBuiltIndexHtml();
+    const atendimentosSection = html.match(
+      /<section[^>]*id="atendimentos"[\s\S]*?<\/section>/,
+    )?.[0];
+
+    expect(atendimentosSection).toBeDefined();
+    expect(atendimentosSection).toMatch(/<h2[^>]*id="atendimentos-title"/);
+    expect(atendimentosSection?.match(/<article/g)?.length).toBe(3);
+    expect(atendimentosSection?.match(/<h3/g)?.length).toBe(3);
+  });
 });
