@@ -87,4 +87,25 @@ describe('index build output', () => {
     expect(ctaFinalSection).toContain('aria-disabled="true"');
     expect(ctaFinalSection).not.toMatch(/href="https:\/\/wa\.me\//);
   });
+
+  it('renderiza footer com link de privacidade e aviso integrado', () => {
+    const html = readBuiltIndexHtml();
+    const footer = html.match(/<footer[^>]*class="site-footer"[\s\S]*?<\/footer>/)?.[0];
+
+    expect(footer).toBeDefined();
+    expect(footer).toContain('href="/privacidade"');
+    expect(footer).toContain('Política de privacidade');
+    expect(footer).toContain('cuidado integrado');
+    expect(footer).not.toContain('CRP');
+    expect(footer).not.toContain('CRM');
+  });
+
+  it('omite titulação regulada quando professionalTitle está vazio', () => {
+    const html = readBuiltIndexHtml();
+    const footer = html.match(/<footer[^>]*class="site-footer"[\s\S]*?<\/footer>/)?.[0];
+
+    expect(footer).toBeDefined();
+    expect(footer).toContain('Janaína Hollanda');
+    expect(footer).not.toMatch(/site-footer__identity-title/);
+  });
 });
