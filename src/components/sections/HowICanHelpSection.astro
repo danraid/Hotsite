@@ -1,0 +1,71 @@
+---
+import Container from '../ui/Container.astro';
+import Prose from '../ui/Prose.astro';
+import Section from '../ui/Section.astro';
+import TopicList from '../TopicList.astro';
+import { comoPossoAjudarContent } from '../../content/como-posso-ajudar';
+
+const { heading, intro, topics, integratedCareDisclaimer } = comoPossoAjudarContent;
+---
+
+<Section id="como-posso-ajudar" dataSectionId="como-posso-ajudar">
+  <Container class="help__container">
+    <h2 id="como-posso-ajudar-title" class="help__heading">{heading}</h2>
+
+    <Prose class="help__intro">
+      {intro.map((paragraph) => <p>{paragraph}</p>)}
+    </Prose>
+
+    <TopicList items={topics} class="help__topics" />
+
+    <Prose class="help__disclaimer">
+      <p>{integratedCareDisclaimer}</p>
+    </Prose>
+  </Container>
+</Section>
+
+<style>
+  .help__container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-block);
+  }
+
+  .help__heading {
+    margin: 0;
+    max-width: var(--content-max);
+    font-family: var(--font-heading);
+    font-size: var(--font-size-h2);
+    font-weight: 500;
+    line-height: var(--line-height-heading);
+    color: var(--color-brand-primary);
+    text-wrap: balance;
+  }
+
+  .help__intro {
+    margin: 0;
+  }
+
+  .help__topics {
+    max-width: var(--content-max);
+  }
+
+  .help__disclaimer {
+    margin: 0;
+    max-width: var(--content-max);
+    padding-inline-start: 1rem;
+    border-inline-start: 3px solid var(--color-accent-gold);
+  }
+
+  @media (min-width: 768px) {
+    .help__topics {
+      max-width: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .help__disclaimer {
+      transition: none;
+    }
+  }
+</style>
