@@ -23,13 +23,13 @@ jobs:
             const headRef = context.payload.pull_request.head.ref;
             const repoOwner = context.repo.owner;
             const repoName = context.repo.repo;
-            
+
             // Protect main or other common branches just in case
             if (['main', 'master', 'dev', 'development'].includes(headRef)) {
               console.log(`Skipping deletion of protected head branch: ${headRef}`);
               return;
             }
-            
+
             console.log(`Attempting to delete merged branch: ${headRef}`);
             try {
               await github.rest.git.deleteRef({
