@@ -1,0 +1,76 @@
+---
+import Container from '../ui/Container.astro';
+import Prose from '../ui/Prose.astro';
+import Section from '../ui/Section.astro';
+import SecondaryButton from '../ui/SecondaryButton.astro';
+import { abordagemContent } from '../../content/abordagem';
+
+const { heading, paragraphs, ctaLabel, ctaHref } = abordagemContent;
+
+/** Índices após os quais inserir separador dourado (máx. 3, entre blocos de perspectiva). */
+const SEPARATOR_AFTER_INDICES = new Set([1, 3, 4]);
+---
+
+<Section id="abordagem" dataSectionId="abordagem">
+  <Container class="approach__container">
+    <h2 id="abordagem-title" class="approach__heading">{heading}</h2>
+
+    <Prose class="approach__prose">
+      {
+        paragraphs.map((paragraph, index) => (
+          <>
+            <p>{paragraph}</p>
+            {SEPARATOR_AFTER_INDICES.has(index) && (
+              <div class="approach__separator" aria-hidden="true" />
+            )}
+          </>
+        ))
+      }
+    </Prose>
+
+    <div class="approach__cta">
+      <SecondaryButton href={ctaHref} label={ctaLabel} ctaLocation="abordagem" />
+    </div>
+  </Container>
+</Section>
+
+<style>
+  .approach__container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-block);
+  }
+
+  .approach__heading {
+    margin: 0;
+    max-width: var(--content-max);
+    font-family: var(--font-heading);
+    font-size: var(--font-size-h2);
+    font-weight: 500;
+    line-height: var(--line-height-heading);
+    color: var(--color-brand-primary);
+    text-wrap: balance;
+  }
+
+  .approach__prose {
+    margin: 0;
+  }
+
+  .approach__separator {
+    width: 4rem;
+    max-width: 4rem;
+    height: 1px;
+    margin-block: 1.5em;
+    background-color: var(--color-accent-gold);
+  }
+
+  .approach__cta {
+    margin-block-start: 0.5rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .approach__separator {
+      transition: none;
+    }
+  }
+</style>
