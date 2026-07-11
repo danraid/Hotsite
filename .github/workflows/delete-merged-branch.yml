@@ -1,0 +1,47 @@
+name: Delete Merged Branch
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  delete-branch:
+    name: Delete Head Branch
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Delete branch
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const headRef = context.payload.pull_request.head.ref;
+            const repoOwner = context.repo.owner;
+            const repoName = context.repo.repo;
+            
+            // Protect main or other common branches just in case
+            if (['main', 'master', 'dev', 'development'].includes(headRef)) {
+              console.log(`Skipping deletion of protected head branch: ${headRef}`);
+              return;
+            }
+            
+            console.log(`Attempting to delete merged branch: ${headRef}`);
+            try {
+              await github.rest.git.deleteRef({
+                owner: repoOwner,
+                repo: repoName,
+                ref: `heads/${headRef}`,
+              });
+              console.log(`Successfully deleted branch: ${headRef}`);
+            } catch (error) {
+              if (error.status === 422) {
+                console.log(`Branch ${headRef} was already deleted or does not exist.`);
+              } else {
+                core.setFailed(`Failed to delete branch ${headRef}: ${error.message}`);
+              }
+            }
