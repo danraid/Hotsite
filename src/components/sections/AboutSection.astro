@@ -1,0 +1,97 @@
+---
+import Container from '../ui/Container.astro';
+import Prose from '../ui/Prose.astro';
+import Section from '../ui/Section.astro';
+import SecondaryButton from '../ui/SecondaryButton.astro';
+import { sobreContent } from '../../content/sobre';
+
+const { heading, paragraphs, ctaLabel, ctaHref, portrait } = sobreContent;
+const hasPortrait = portrait !== null;
+---
+
+<Section id="sobre" dataSectionId="sobre">
+  <Container class:list={['about__container', { 'about__container--with-portrait': hasPortrait }]}>
+    <div class="about__content">
+      <h2 id="sobre-title" class="about__heading">{heading}</h2>
+
+      <Prose class="about__prose">
+        {paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+      </Prose>
+
+      <div class="about__cta">
+        <SecondaryButton href={ctaHref} label={ctaLabel} ctaLocation="sobre" />
+      </div>
+    </div>
+
+    {
+      hasPortrait && (
+        <figure class="about__figure">
+          <img
+            src={portrait.src}
+            alt={portrait.alt}
+            width={portrait.width}
+            height={portrait.height}
+            loading="lazy"
+            decoding="async"
+            class="about__portrait"
+          />
+        </figure>
+      )
+    }
+  </Container>
+</Section>
+
+<style>
+  .about__container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-block);
+  }
+
+  .about__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-block);
+  }
+
+  .about__heading {
+    margin: 0;
+    max-width: var(--content-max);
+    font-family: var(--font-heading);
+    font-size: var(--font-size-h2);
+    font-weight: 500;
+    line-height: var(--line-height-heading);
+    color: var(--color-brand-primary);
+    text-wrap: balance;
+  }
+
+  .about__prose {
+    margin: 0;
+  }
+
+  .about__cta {
+    margin-block-start: 0.5rem;
+  }
+
+  .about__figure {
+    margin: 0;
+  }
+
+  .about__portrait {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 0.375rem;
+    object-fit: cover;
+    filter: sepia(8%) saturate(105%);
+  }
+
+  @media (min-width: 768px) {
+    .about__container--with-portrait {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      align-items: start;
+      gap: var(--space-block);
+    }
+  }
+</style>
