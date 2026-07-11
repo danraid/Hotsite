@@ -1,0 +1,17 @@
+---
+description: Engineering constraints for spec-driven hotsite implementation.
+alwaysApply: false
+---
+
+# Hotsite Coding Standards
+
+- Implement only the active spec.
+- Prefer semantic HTML and progressive enhancement.
+- Preserve keyboard navigation, visible focus, reduced-motion support, and accessible names.
+- Do not invent marketing copy, claims, legal text, metrics, testimonials, or customer logos.
+- Use approved tokens rather than isolated visual values when a token exists.
+- Avoid unnecessary dependencies and speculative abstractions.
+- Keep sections composable and content separable from presentation when the design requires editable content.
+- Optimize image dimensions, formats, loading priority, and alt text intentionally.
+- Protect Core Web Vitals by limiting client-side JavaScript and third-party scripts.
+- Never commit secrets or production credentials.

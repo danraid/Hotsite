@@ -1,0 +1,26 @@
+---
+description: Apply the external web-design-guidelines skill to all visual design, UI implementation, responsive behavior, and visual review work.
+alwaysApply: true
+---
+
+# Web Design Standards
+
+For any task involving visual design, page composition, UI components, responsive behavior, interaction design, visual implementation, or visual review, load and follow `web-design-guidelines`.
+
+Install the dependency when it is not already available:
+
+```bash
+npx skills add https://github.com/antfu/skills --skill web-design-guidelines
+```
+
+## Precedence
+
+1. Explicit user decisions and applicable legal or professional constraints.
+2. Approved spec for the active unit of work.
+3. Approved Design Document.
+4. Project brand guidelines, content inputs, and design tokens.
+5. Repository rules and established architecture.
+6. `web-design-guidelines`.
+7. General framework conventions.
+
+Do not let the external skill override approved brand, content, accessibility, privacy, legal, product, or technical decisions. Document material conflicts and follow the higher-priority source.

@@ -1,0 +1,45 @@
+---
+description: Canonical format and quality requirements for hotsite implementation specs.
+alwaysApply: false
+---
+
+# Hotsite Spec Format
+
+Each spec lives at `docs/specs/SPEC-###-slug/` and contains:
+
+- `spec.md`
+- `meta.yaml`
+
+## Required `spec.md` frontmatter
+
+```yaml
+---
+id: SPEC-###
+title: Human-readable title
+category: scaffold | section | integration | quality | release
+status: draft | ready | in_progress | review | done | blocked | cancelled
+---
+```
+
+## Required body sections
+
+1. Objective
+2. Context and traceability
+3. Scope
+4. Out of scope
+5. User experience
+6. Functional requirements
+7. Non-functional requirements
+8. Content contract
+9. Visual and responsive behavior
+10. Technical contract
+11. Expected file changes
+12. Analytics and SEO impact
+13. Accessibility requirements
+14. Acceptance criteria
+15. Test plan
+16. Risks and open questions
+17. Definition of done
+
+Requirements must be atomic, testable, and uniquely identified.
+Acceptance criteria must describe observable outcomes, not implementation steps.

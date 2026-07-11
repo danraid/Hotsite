@@ -1,0 +1,50 @@
+---
+description: Mandatory lifecycle for hotsite design, specification, implementation, pull requests, and review.
+alwaysApply: true
+---
+
+# Hotsite Delivery Lifecycle
+
+Use this lifecycle for all hotsite work:
+
+1. Approved design document.
+2. Approved implementation specs.
+3. One spec implemented at a time.
+4. Validation completed locally.
+5. Pull request created with traceability.
+6. Pull request reviewed against the design and spec.
+
+Do not skip lifecycle stages. Do not implement directly from a vague request. Do not expand scope silently.
+
+## Sources of truth
+
+Apply this precedence when sources conflict:
+
+1. Explicit user decision in the current conversation.
+2. Approved spec for the current unit of work.
+3. Approved hotsite design document.
+4. Project brand guidelines, content inputs, and design tokens.
+5. Existing repository conventions and architecture.
+6. `web-design-guidelines` for visual design and UI quality.
+7. General engineering convention.
+
+Record unresolved conflicts rather than guessing.
+
+## Required repository layout
+
+- `docs/designs/` — approved design documents.
+- `docs/specs/SPEC-###-slug/` — implementation specs.
+- `.cursor/skills/` — reusable Cursor skills.
+
+## Quality gates
+
+Every implementation must pass the repository's applicable:
+
+- install or dependency resolution;
+- formatter;
+- lint;
+- type checking;
+- unit/component/integration tests;
+- production build;
+- accessibility checks;
+- responsive smoke checks.
