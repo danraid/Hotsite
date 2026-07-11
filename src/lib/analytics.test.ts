@@ -44,10 +44,7 @@ describe('track consent gate', () => {
   });
 
   it('é no-op com provider none e loga em dev', () => {
-    initAnalytics(
-      { ...DEFAULT_CONFIG, provider: 'none' },
-      { dev: true },
-    );
+    initAnalytics({ ...DEFAULT_CONFIG, provider: 'none' }, { dev: true });
     setDevEnvironmentForTests(true);
 
     track('cta_click', {

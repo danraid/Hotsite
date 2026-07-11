@@ -1,8 +1,4 @@
-import {
-  isBookingCta,
-  resolveDestinationType,
-  track,
-} from '../lib/analytics';
+import { isBookingCta, resolveDestinationType, track } from '../lib/analytics';
 
 function getLinkLabel(link: HTMLAnchorElement): string {
   return link.textContent?.trim() || link.getAttribute('aria-label') || '';
@@ -46,10 +42,7 @@ function handleNavClick(link: HTMLAnchorElement): void {
 }
 
 function isHeaderNavLink(link: HTMLAnchorElement): boolean {
-  return Boolean(
-    link.closest('.site-header__nav') ||
-      link.closest('.mobile-nav-drawer__nav'),
-  );
+  return Boolean(link.closest('.site-header__nav') || link.closest('.mobile-nav-drawer__nav'));
 }
 
 export function initTrackClicks(): void {

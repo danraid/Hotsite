@@ -1,4 +1,8 @@
-import type { AnalyticsAdapter, AnalyticsProvider, AnalyticsRuntimeConfig } from '../analytics-types';
+import type {
+  AnalyticsAdapter,
+  AnalyticsProvider,
+  AnalyticsRuntimeConfig,
+} from '../analytics-types';
 import { createGa4Adapter } from './ga4';
 import { createMatomoAdapter } from './matomo';
 import { createNoneAdapter } from './none';
@@ -20,5 +24,7 @@ export function createAnalyticsAdapter(config: AnalyticsRuntimeConfig): Analytic
 }
 
 export function isKnownProvider(provider: string): provider is AnalyticsProvider {
-  return provider === 'none' || provider === 'plausible' || provider === 'ga4' || provider === 'matomo';
+  return (
+    provider === 'none' || provider === 'plausible' || provider === 'ga4' || provider === 'matomo'
+  );
 }
