@@ -3,16 +3,18 @@ interface Props {
   id?: string;
   title?: string;
   variant?: 'default' | 'warm-surface' | 'emphasis';
+  dataSectionId?: string;
   class?: string;
 }
 
-const { id, title, variant = 'default', class: className } = Astro.props;
+const { id, title, variant = 'default', dataSectionId, class: className } = Astro.props;
 ---
 
 <section
   id={id}
   class:list={['section', `section--${variant}`, className]}
   aria-labelledby={title ? `${id}-title` : undefined}
+  data-section-id={dataSectionId}
 >
   {
     title && id && (
