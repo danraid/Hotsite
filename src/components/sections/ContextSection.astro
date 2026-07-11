@@ -1,0 +1,98 @@
+---
+import Container from '../ui/Container.astro';
+import Prose from '../ui/Prose.astro';
+import Section from '../ui/Section.astro';
+import { contextoContent } from '../../content/contexto';
+
+const { opening, paragraphs, optionalLinkLabel, optionalLinkHref } = contextoContent;
+---
+
+<Section id="contexto" dataSectionId="contexto">
+  <Container class="context__container">
+    <h2 id="contexto-title" class="context__sr-only">Apresentação</h2>
+
+    <blockquote class="context__pull-quote" aria-labelledby="contexto-title">
+      {opening.map((sentence) => <p>{sentence}</p>)}
+    </blockquote>
+
+    <div class="context__separator" aria-hidden="true"></div>
+
+    <Prose class="context__prose">
+      {paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+      <p class="context__link-wrap">
+        <a href={optionalLinkHref} class="context__link">{optionalLinkLabel}</a>
+      </p>
+    </Prose>
+  </Container>
+</Section>
+
+<style>
+  .context__container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-block);
+  }
+
+  .context__sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .context__pull-quote {
+    margin: 0;
+    max-width: var(--content-max);
+    padding: 0;
+    border: none;
+    font-family: var(--font-heading);
+    font-size: clamp(1.25rem, 1.5vw + 0.875rem, 1.625rem);
+    font-weight: 500;
+    line-height: var(--line-height-heading);
+    color: var(--color-brand-primary);
+    text-wrap: balance;
+  }
+
+  .context__pull-quote p {
+    margin-block: 0 0.75em;
+  }
+
+  .context__pull-quote p:last-child {
+    margin-block-end: 0;
+  }
+
+  .context__separator {
+    width: 3rem;
+    height: 1px;
+    background-color: var(--color-accent-gold);
+  }
+
+  .context__prose {
+    margin: 0;
+  }
+
+  .context__link-wrap {
+    margin-block-start: 1.5em;
+  }
+
+  .context__link {
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .context__link:hover {
+    color: var(--color-brand-primary-hover);
+  }
+
+  @media (min-width: 768px) {
+    .context__container {
+      gap: calc(var(--space-block) * 1.25);
+    }
+  }
+</style>
