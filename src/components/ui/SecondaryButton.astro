@@ -1,0 +1,70 @@
+---
+interface Props {
+  href: string;
+  label: string;
+  external?: boolean;
+  disabled?: boolean;
+  class?: string;
+}
+
+const { href, label, external = false, disabled = false, class: className } = Astro.props;
+
+const linkProps = external
+  ? { target: '_blank', rel: 'noopener noreferrer' }
+  : {};
+---
+
+<a
+  href={disabled ? undefined : href}
+  class:list={['btn', 'btn--secondary', className, { 'btn--disabled': disabled }]}
+  aria-disabled={disabled || undefined}
+  tabindex={disabled ? -1 : undefined}
+  {...linkProps}
+>
+  {label}
+</a>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    padding: 0.625rem 1.5rem;
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: 500;
+    line-height: 1.2;
+    text-decoration: none;
+    border: var(--focus-ring-width) solid var(--color-accent-gold);
+    border-radius: 0.25rem;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .btn--secondary {
+    color: var(--color-brand-primary);
+    background-color: transparent;
+  }
+
+  .btn--secondary:hover {
+    background-color: color-mix(in srgb, var(--color-accent-gold) 12%, transparent);
+  }
+
+  .btn--secondary:active {
+    background-color: color-mix(in srgb, var(--color-accent-gold) 20%, transparent);
+  }
+
+  .btn:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: 2px;
+  }
+
+  .btn--disabled,
+  .btn--disabled:hover,
+  .btn--disabled:active {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+</style>
