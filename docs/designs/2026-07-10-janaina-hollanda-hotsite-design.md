@@ -7,9 +7,10 @@
 | **Título** | Hotsite de conversão — Janaína Hollanda |
 | **Status** | `ready-for-review` |
 | **Owner** | `[OPEN]` |
-| **Data** | 2026-07-10 |
+| **Data** | 2026-07-10 (rev. 2026-07-11 — segurança HTTP) |
 | **Idioma** | Português (Brasil) |
 | **Fontes relacionadas** | `docs/inputs/*`, `AGENTS.md`, `.cursor/rules/*` |
+| **Addenda** | `docs/designs/2026-07-11-http-security-headers-design.md` |
 
 ### Inventário de fontes
 
@@ -689,7 +690,7 @@ Todos os componentes devem aceitar destinos e copy via configuração central, n
 
 ### Estado do repositório
 
-O repositório contém framework de skills (`design-doc`, `create-spec`, etc.) e inputs em `docs/inputs/`. **Não há `package.json`, rotas ou componentes de aplicação.**
+O repositório contém aplicação **Astro estática** (`astro.config.mjs`, `output: 'static'`), componentes em `src/`, deploy via GitHub Actions para VPS (`.github/workflows/deploy.yml`). Cabeçalhos HTTP de segurança **não estão configurados** no repositório — ver addendum `docs/designs/2026-07-11-http-security-headers-design.md`.
 
 ### DEC-001 — Arquitetura de página única
 
@@ -698,13 +699,12 @@ O repositório contém framework de skills (`design-doc`, `create-spec`, etc.) e
 - **Alternativas:** Multi-page por serviço; SPA com rotas — rejeitadas na v1 por complexidade desnecessária dado o inventário de conteúdo.
 - **Consequência:** SEO concentrado em uma URL; implementação mais simples.
 
-### DEC-002 — Stack tecnológica `[RECOMMENDATION]`
+### DEC-002 — Stack tecnológica
 
-- **Status:** Proposed
-- **Decisão recomendada:** **Astro** ou **Next.js (App Router)** com geração estática/SSR, TypeScript, CSS modular ou Tailwind com tokens.
-- **Rationale:** SSG/SSR alinhado a `technical-constraints.md`; baixo JS; bom SEO; deploy simples (Vercel, Netlify, Azure Static Web Apps).
-- **Alternativas:** HTML estático puro (mínimo JS, mais manual); WordPress (CMS, mais peso).
-- **Validação:** Aprovação explícita do owner + POC de build.
+- **Status:** Implemented (SPEC-001)
+- **Decisão:** **Astro** com geração estática, TypeScript, CSS com tokens em `src/styles/`.
+- **Rationale:** SSG alinhado a `technical-constraints.md`; baixo JS; deploy SCP para VPS.
+- **Validação:** `npm run build` e pipeline CI passam.
 
 ### DEC-003 — Tipografia web
 
@@ -867,6 +867,24 @@ Recomendada antes do lançamento (`research.md`); não executada neste documento
 
 ### Segurança
 
+Requisitos detalhados de cabeçalhos HTTP, CSP, cookies e hardening de infraestrutura estão no addendum **`docs/designs/2026-07-11-http-security-headers-design.md`** (SEC-001–SEC-009).
+
+Resumo obrigatório para produção:
+
+| Controle | Objetivo |
+|---|---|
+| `Strict-Transport-Security` | Forçar HTTPS; reduzir downgrade |
+| `Content-Security-Policy` + `frame-ancestors 'none'` | Mitigar XSS; bloquear clickjacking / framing externo |
+| `X-Content-Type-Options: nosniff` | Evitar MIME sniffing |
+| `Referrer-Policy` | Limitar vazamento de URL |
+| `Permissions-Policy` | Desabilitar APIs do browser não usadas |
+| Cookies HTTP (`Secure`, `HttpOnly`, `SameSite`) | Quando `Set-Cookie` existir |
+| Remoção de cabeçalhos reveladores | Ocultar versão de servidor/framework |
+
+Implementação recomendada: **nginx na VPS** (deploy estático via `.github/workflows/deploy.yml`), com CSP parametrizada conforme provedor de analytics (SPEC-012).
+
+Requisitos de aplicação (mantidos):
+
 - Sem segredos no bundle cliente.
 - HTTPS obrigatório em produção.
 - Formulários via POST seguro se implementados.
@@ -1007,6 +1025,9 @@ Implementar **uma spec por vez**, na ordem sugerida:
 | **SPEC-010** | Footer, identificação profissional, links legais | SPEC-001; políticas |
 | **SPEC-011** | SEO, metadata, OG, favicon | SPEC-003+ |
 | **SPEC-012** | Integrações: agendamento, WhatsApp, analytics, consent | Destinos definidos |
+| **SPEC-013** | Cabeçalhos HTTP, CSP, nginx, verificação de segurança | SPEC-001; SPEC-012 (matriz analytics) |
+
+Ver addendum: `docs/designs/2026-07-11-http-security-headers-design.md`.
 
 ---
 
@@ -1220,6 +1241,45 @@ Implementar **uma spec por vez**, na ordem sugerida:
 
 ---
 
+### SEC-001 — Cabeçalhos HTTP de segurança
+
+- **Priority:** Must
+- **Type:** Non-functional
+- **Source:** `docs/designs/2026-07-11-http-security-headers-design.md`
+- **Status:** Proposed
+
+**Requirement:** Produção deve enviar HSTS, CSP (com `frame-ancestors 'none'`), `X-Content-Type-Options: nosniff`, `Referrer-Policy` e `Permissions-Policy` conforme addendum SEC-001–SEC-006.
+
+**Validation:** Verificação documentada pós-deploy (ex.: `curl -sI`, securityheaders.com); iframe externo bloqueado.
+
+---
+
+### SEC-002 — Cookies HTTP endurecidos
+
+- **Priority:** Must (condicional)
+- **Type:** Non-functional
+- **Source:** `docs/designs/2026-07-11-http-security-headers-design.md`; `legal-and-compliance.md`
+- **Status:** Proposed
+
+**Requirement:** Todo cookie HTTP emitido pelo site em produção deve usar `Secure` e `SameSite`; cookies não legíveis por script devem incluir `HttpOnly`.
+
+**Validation:** Inspeção de `Set-Cookie` quando aplicável; política de cookies atualizada.
+
+---
+
+### SEC-003 — Ocultar metadados de servidor
+
+- **Priority:** Should
+- **Type:** Non-functional
+- **Source:** `docs/designs/2026-07-11-http-security-headers-design.md`
+- **Status:** Proposed
+
+**Requirement:** Respostas de produção não devem expor versão de servidor ou `X-Powered-By` quando controlável na infraestrutura.
+
+**Validation:** `curl -sI` em produção conforme SEC-008 do addendum.
+
+---
+
 ## 25. Approval checklist
 
 ### Para marcar como `approved`
@@ -1233,6 +1293,7 @@ Implementar **uma spec por vez**, na ordem sugerida:
 - [ ] Stack tecnológica aprovada (DEC-002)
 - [ ] Decisão CMS tomada
 - [ ] Plataforma de analytics e consentimento definidas
+- [ ] Addendum de cabeçalhos HTTP revisado (`2026-07-11-http-security-headers-design.md`)
 - [ ] Assets mínimos (logo, OG image) aprovados ou deferidos explicitamente
 - [ ] Requisitos Must sem status Blocked
 
