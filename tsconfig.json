@@ -7,5 +7,5 @@
     }
   },
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"]
+  "exclude": ["dist", "**/*.test.ts", "vitest.config.ts", "vitest.global-setup.ts"]
 }
