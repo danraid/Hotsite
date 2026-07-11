@@ -1,0 +1,65 @@
+/**
+ * Design tokens — Janaína Hollanda hotsite
+ * Source: docs/inputs/brand-guidelines.md, design doc §11
+ * HEX values are defined only in this file.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* Palette */
+  --color-brand-primary: #3e4a36;
+  --color-background-primary: #f8f5ef;
+  --color-surface-warm: #e9e1d5;
+  --color-accent-gold: #c8a46a;
+  --color-accent-sage: #a6b29b;
+  --color-text-primary: #4d4d4d;
+  --color-text-muted: #b9b3a7;
+  --color-accent-petrol: #4b6a72;
+
+  /* Interactive states (derived from brand primary) */
+  --color-brand-primary-hover: color-mix(in srgb, var(--color-brand-primary) 92%, black);
+  --color-brand-primary-active: color-mix(in srgb, var(--color-brand-primary) 88%, black);
+  --color-on-brand-primary: var(--color-background-primary);
+
+  /* Typography */
+  --font-heading: 'Cormorant Garamond', 'Times New Roman', serif;
+  --font-body: 'Source Sans 3', system-ui, sans-serif;
+
+  --font-size-h1: 2rem;
+  --font-size-h2: 1.75rem;
+  --font-size-h3: 1.25rem;
+  --font-size-body: 1rem;
+  --font-size-small: 0.875rem;
+  --line-height-body: 1.65;
+  --line-height-heading: 1.2;
+
+  /* Spacing */
+  --space-section-y: 3.5rem;
+  --space-block: 1.5rem;
+  --container-max: 72rem;
+  --content-max: 65ch;
+
+  /* Layout */
+  --container-padding-x: 1.25rem;
+
+  /* Motion */
+  --transition-duration: 250ms;
+  --transition-easing: ease;
+
+  /* Focus */
+  --focus-ring-width: 2px;
+  --focus-ring-color: var(--color-accent-gold);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --font-size-h1: 2.5rem;
+    --font-size-h2: 2rem;
+    --font-size-h3: 1.5rem;
+    --font-size-body: 1.125rem;
+    --line-height-body: 1.7;
+    --space-section-y: 5rem;
+    --container-padding-x: 2rem;
+  }
+}

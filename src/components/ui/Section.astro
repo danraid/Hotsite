@@ -1,0 +1,56 @@
+---
+interface Props {
+  id?: string;
+  title?: string;
+  variant?: 'default' | 'warm-surface' | 'emphasis';
+  class?: string;
+}
+
+const { id, title, variant = 'default', class: className } = Astro.props;
+---
+
+<section
+  id={id}
+  class:list={['section', `section--${variant}`, className]}
+  aria-labelledby={title ? `${id}-title` : undefined}
+>
+  {
+    title && id && (
+      <h2 id={`${id}-title`} class="section__title">
+        {title}
+      </h2>
+    )
+  }
+  {
+    title && !id && (
+      <h2 class="section__title">
+        {title}
+      </h2>
+    )
+  }
+  <slot />
+</section>
+
+<style>
+  .section {
+    padding-block: var(--space-section-y);
+  }
+
+  .section--default {
+    background-color: var(--color-background-primary);
+  }
+
+  .section--warm-surface {
+    background-color: var(--color-surface-warm);
+  }
+
+  .section--emphasis {
+    background-color: var(--color-background-primary);
+    border-block: 1px solid var(--color-accent-sage);
+  }
+
+  .section__title {
+    margin-block: 0 var(--space-block);
+    text-align: center;
+  }
+</style>

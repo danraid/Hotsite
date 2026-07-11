@@ -1,0 +1,42 @@
+---
+/**
+ * Dev-only proof page for UI primitives validation (SPEC-001-FR-003).
+ * Not linked from production navigation; remove or gate if undesired in production.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PrimaryButton from '../../components/ui/PrimaryButton.astro';
+import SecondaryButton from '../../components/ui/SecondaryButton.astro';
+import Section from '../../components/ui/Section.astro';
+import Prose from '../../components/ui/Prose.astro';
+import Container from '../../components/ui/Container.astro';
+import { siteConfig } from '../../config/site.config';
+---
+
+<BaseLayout title="UI Primitives — Dev">
+  <main id="main">
+    <Section id="test" title="Primitivos UI" variant="default">
+      <Container>
+        <Prose>
+          <p>Página de prova para validação de componentes compartilhados.</p>
+        </Prose>
+        <div class="button-row">
+          <PrimaryButton
+            href={siteConfig.primaryCta.href}
+            label={siteConfig.primaryCta.label}
+            external={siteConfig.primaryCta.external}
+          />
+          <SecondaryButton href="#atendimentos" label="Conhecer os atendimentos" />
+        </div>
+      </Container>
+    </Section>
+  </main>
+</BaseLayout>
+
+<style>
+  .button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-block);
+    margin-block-start: var(--space-block);
+  }
+</style>
