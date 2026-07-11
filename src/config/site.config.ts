@@ -5,6 +5,9 @@
  * CTAs, contact details, and metadata must be verified with the client.
  */
 
+import { heroContent } from '../content/hero';
+import { truncateMetaDescription } from '../utils/truncate-meta-description';
+
 export interface CtaLink {
   label: string;
   href: string;
@@ -79,10 +82,12 @@ export const siteConfig: SiteConfig = {
   },
 
   metadata: {
-    title: 'Janaína Hollanda — Terapia',
-    description: '#TODO-metadata-description',
-    canonical: '#TODO-canonical-url',
-    ogImage: '#TODO-og-image-path',
+    title: 'Janaína Hollanda — Acompanhamento terapêutico e desenvolvimento pessoal',
+    description: truncateMetaDescription(heroContent.supportingCopy),
+    // #TODO-canonical-url — replace with production domain before launch
+    canonical: 'https://example.com',
+    // #TODO-og-image — replace with approved 1200×630 asset before launch
+    ogImage: '/og-image.jpg',
   },
 
   navigation: [
