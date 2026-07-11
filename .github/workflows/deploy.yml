@@ -51,4 +51,3 @@ jobs:
           source: 'dist/*'
           target: ${{ steps.target.outputs.vps_target }}
           strip_components: 1
-
