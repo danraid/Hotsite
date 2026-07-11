@@ -36,6 +36,7 @@ const whatsappDisabled = whatsappUrl === null;
         external={!whatsappDisabled}
         disabled={whatsappDisabled}
         ctaLocation="cta-final"
+        ctaType={whatsappDisabled ? undefined : 'whatsapp'}
         class="final-cta__button"
       />
     </div>

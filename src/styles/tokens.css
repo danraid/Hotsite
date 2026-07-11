@@ -44,6 +44,7 @@
   --container-padding-x: 1.25rem;
   --header-height: 4.5rem;
   --z-header: 100;
+  --z-cookie-consent: 150;
   --z-mobile-nav: 200;
 
   /* Motion */

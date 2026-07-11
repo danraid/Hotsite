@@ -5,6 +5,7 @@ interface Props {
   external?: boolean;
   disabled?: boolean;
   ctaLocation?: string;
+  ctaType?: string;
   class?: string;
 }
 
@@ -14,6 +15,7 @@ const {
   external = false,
   disabled = false,
   ctaLocation,
+  ctaType,
   class: className,
 } = Astro.props;
 
@@ -26,6 +28,7 @@ const linkProps = external ? { target: '_blank', rel: 'noopener noreferrer' } : 
   aria-disabled={disabled || undefined}
   tabindex={disabled ? -1 : undefined}
   data-cta-location={ctaLocation}
+  data-cta-type={ctaType}
   {...linkProps}
 >
   {label}
