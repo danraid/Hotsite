@@ -36,6 +36,23 @@ describe('siteConfig.siteName', () => {
   });
 });
 
+describe('siteConfig.metadata', () => {
+  it('expõe title, description, canonical e ogImage configuráveis', () => {
+    expect(siteConfig.metadata.title).toBe(
+      'Janaína Hollanda — Acompanhamento terapêutico e desenvolvimento pessoal',
+    );
+    expect(siteConfig.metadata.description.length).toBeLessThanOrEqual(160);
+    expect(siteConfig.metadata.canonical).toBe('https://example.com');
+    expect(siteConfig.metadata.ogImage).toBe('/og-image.jpg');
+  });
+
+  it('deriva description do copy de apoio do hero sem claims extras', () => {
+    expect(siteConfig.metadata.description.endsWith('…')).toBe(true);
+    expect(siteConfig.metadata.description).not.toContain('garantia');
+    expect(siteConfig.metadata.description).not.toContain('cura');
+  });
+});
+
 describe('siteConfig.footer', () => {
   it('expõe identificação profissional sem titulação inventada', () => {
     expect(siteConfig.footer.professionalName).toBe('Janaína Hollanda');
