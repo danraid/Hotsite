@@ -4,14 +4,20 @@ interface Props {
   label: string;
   external?: boolean;
   disabled?: boolean;
+  ctaLocation?: string;
   class?: string;
 }
 
-const { href, label, external = false, disabled = false, class: className } = Astro.props;
+const {
+  href,
+  label,
+  external = false,
+  disabled = false,
+  ctaLocation,
+  class: className,
+} = Astro.props;
 
-const linkProps = external
-  ? { target: '_blank', rel: 'noopener noreferrer' }
-  : {};
+const linkProps = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
 ---
 
 <a
@@ -19,6 +25,7 @@ const linkProps = external
   class:list={['btn', 'btn--primary', className, { 'btn--disabled': disabled }]}
   aria-disabled={disabled || undefined}
   tabindex={disabled ? -1 : undefined}
+  data-cta-location={ctaLocation}
   {...linkProps}
 >
   {label}

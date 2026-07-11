@@ -21,13 +21,7 @@ const { id, title, variant = 'default', class: className } = Astro.props;
       </h2>
     )
   }
-  {
-    title && !id && (
-      <h2 class="section__title">
-        {title}
-      </h2>
-    )
-  }
+  {title && !id && <h2 class="section__title">{title}</h2>}
   <slot />
 </section>
 

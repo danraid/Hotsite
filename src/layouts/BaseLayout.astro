@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import SkipLink from '../components/SkipLink.astro';
+import SiteHeader from '../components/SiteHeader.astro';
 import { siteConfig } from '../config/site.config';
 
 interface Props {
@@ -18,6 +20,8 @@ const pageTitle = title ?? siteConfig.metadata.title;
     <title>{pageTitle}</title>
   </head>
   <body>
+    <SkipLink />
+    <SiteHeader />
     <slot />
   </body>
 </html>

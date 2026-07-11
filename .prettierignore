@@ -1,0 +1,10 @@
+dist
+node_modules
+package-lock.json
+.astro
+docs
+.cursor
+.agents
+README.md
+skills-lock.json
+AGENTS.md
