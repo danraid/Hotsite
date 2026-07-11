@@ -1,0 +1,28 @@
+---
+interface Props {
+  steps: readonly string[];
+  class?: string;
+}
+
+const { steps, class: className } = Astro.props;
+---
+
+<ol class:list={['process-steps', className]}>
+  {steps.map((step) => <li class="process-steps__item">{step}</li>)}
+</ol>
+
+<style>
+  .process-steps {
+    margin: 0;
+    padding-inline-start: 1.25em;
+    max-width: var(--content-max);
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+    color: var(--color-text-primary);
+  }
+
+  .process-steps__item + .process-steps__item {
+    margin-block-start: 0.75em;
+  }
+</style>

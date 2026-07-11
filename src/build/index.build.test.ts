@@ -53,4 +53,38 @@ describe('index build output', () => {
     expect(atendimentosSection?.match(/<article/g)?.length).toBe(3);
     expect(atendimentosSection?.match(/<h3/g)?.length).toBe(3);
   });
+
+  it('renderiza seções de conversão final com copy e CTAs do inventário', () => {
+    const html = readBuiltIndexHtml();
+
+    expect(html).toContain('id="transicao"');
+    expect(html).toContain('Nem tudo o que você carrega começou em você.');
+    expect(html).toContain('Mas pode ser a partir de você que uma nova história comece.');
+
+    expect(html).toContain('id="como-funciona"');
+    expect(html).toContain('Como funciona');
+    expect(html).toContain('Agendar uma conversa inicial');
+    expect(html).toContain('<ol');
+
+    expect(html).toContain('id="cta-final"');
+    expect(html).toContain('Você não precisa ter todas as respostas para começar.');
+    expect(html).toContain('Entrar em contato pelo WhatsApp');
+  });
+
+  it('expõe exatamente três CTAs primários na homepage', () => {
+    const html = readBuiltIndexHtml();
+    const primaryCtas = html.match(/data-cta-type="primary"/g);
+
+    expect(primaryCtas?.length).toBe(3);
+  });
+
+  it('desabilita WhatsApp quando número é placeholder na config', () => {
+    const html = readBuiltIndexHtml();
+    const ctaFinalSection = html.match(/<section[^>]*id="cta-final"[\s\S]*?<\/section>/)?.[0];
+
+    expect(ctaFinalSection).toBeDefined();
+    expect(ctaFinalSection).toContain('Entrar em contato pelo WhatsApp');
+    expect(ctaFinalSection).toContain('aria-disabled="true"');
+    expect(ctaFinalSection).not.toMatch(/href="https:\/\/wa\.me\//);
+  });
 });

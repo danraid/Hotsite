@@ -1,0 +1,62 @@
+---
+import ProcessSteps from '../ProcessSteps.astro';
+import Container from '../ui/Container.astro';
+import PrimaryButton from '../ui/PrimaryButton.astro';
+import Section from '../ui/Section.astro';
+import { siteConfig } from '../../config/site.config';
+import { comoFuncionaContent } from '../../content/como-funciona';
+
+const { heading, steps, primaryCtaLabel } = comoFuncionaContent;
+const { primaryCta } = siteConfig;
+---
+
+<Section id="como-funciona" dataSectionId="como-funciona">
+  <Container class="how-it-works__container">
+    <h2 id="como-funciona-title" class="how-it-works__heading">{heading}</h2>
+
+    <ProcessSteps steps={steps} class="how-it-works__steps" />
+
+    <div class="how-it-works__cta">
+      <PrimaryButton
+        href={primaryCta.href}
+        label={primaryCtaLabel}
+        external={primaryCta.external}
+        ctaLocation="como-funciona"
+        class="how-it-works__cta-button"
+      />
+    </div>
+  </Container>
+</Section>
+
+<style>
+  .how-it-works__container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-block);
+  }
+
+  .how-it-works__heading {
+    margin: 0;
+    max-width: var(--content-max);
+    font-family: var(--font-heading);
+    font-size: var(--font-size-h2);
+    font-weight: 500;
+    line-height: var(--line-height-heading);
+    color: var(--color-brand-primary);
+    text-wrap: balance;
+  }
+
+  .how-it-works__cta {
+    margin-block-start: 0.5rem;
+  }
+
+  .how-it-works__cta :global(.how-it-works__cta-button) {
+    width: 100%;
+  }
+
+  @media (min-width: 768px) {
+    .how-it-works__cta :global(.how-it-works__cta-button) {
+      width: auto;
+    }
+  }
+</style>

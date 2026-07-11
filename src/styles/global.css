@@ -33,7 +33,9 @@ html {
 #vivencias,
 #abordagem,
 #sobre,
-#como-funciona {
+#transicao,
+#como-funciona,
+#cta-final {
   scroll-margin-top: var(--header-height);
 }
 

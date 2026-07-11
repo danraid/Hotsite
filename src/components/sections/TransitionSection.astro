@@ -1,0 +1,43 @@
+---
+import Container from '../ui/Container.astro';
+import Section from '../ui/Section.astro';
+import { transicaoContent } from '../../content/transicao';
+
+const { quotes } = transicaoContent;
+---
+
+<Section id="transicao" variant="warm-surface" dataSectionId="transicao">
+  <Container class="transition__container">
+    <blockquote class="transition__quote">
+      {quotes.map((quote) => <p class="transition__line">{quote}</p>)}
+    </blockquote>
+  </Container>
+</Section>
+
+<style>
+  .transition__container {
+    display: flex;
+    justify-content: center;
+    padding-block: 1rem;
+  }
+
+  .transition__quote {
+    margin: 0;
+    max-width: 42rem;
+    text-align: center;
+  }
+
+  .transition__line {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: clamp(1.375rem, 2.5vw + 0.75rem, 2rem);
+    font-weight: 500;
+    line-height: var(--line-height-heading);
+    color: var(--color-brand-primary);
+    text-wrap: balance;
+  }
+
+  .transition__line + .transition__line {
+    margin-block-start: 1rem;
+  }
+</style>
