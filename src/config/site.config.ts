@@ -16,6 +16,20 @@ export interface NavItem {
   href: string;
 }
 
+export interface FooterConfig {
+  professionalName: string;
+  /** Omit from UI when empty — do not invent regulated titles */
+  professionalTitle: string;
+  email: string;
+  phone: string;
+  /** Optional in-person service region */
+  region: string;
+  privacyPolicyPath: string;
+  /** When set, exposes a cookies policy link in the footer */
+  cookiesPolicyPath?: string;
+  integratedCareNotice: string;
+}
+
 export interface SiteConfig {
   siteName: string;
   /** URL externa de calendário de vivências; quando ausente, CTA usa âncora #vivencias */
@@ -37,6 +51,7 @@ export interface SiteConfig {
     ogImage: string;
   };
   navigation: NavItem[];
+  footer: FooterConfig;
 }
 
 export const siteConfig: SiteConfig = {
@@ -77,6 +92,21 @@ export const siteConfig: SiteConfig = {
     { label: 'Sobre', href: '#sobre' },
     { label: 'Como funciona', href: '#como-funciona' },
   ],
+
+  footer: {
+    professionalName: 'Janaína Hollanda',
+    // OPEN — não preencher sem verificação
+    professionalTitle: '',
+    // OPEN — substituir antes do lançamento
+    email: '',
+    phone: '',
+    // OPEN — região de atendimento presencial
+    region: '',
+    privacyPolicyPath: '/privacidade',
+    cookiesPolicyPath: '/cookies',
+    integratedCareNotice:
+      'Quando a situação exigir acompanhamento médico, psicológico ou de outro profissional de saúde, o processo terapêutico deverá ser compreendido como parte de um cuidado integrado, e não como substituição da assistência indicada.',
+  },
 };
 
 export default siteConfig;

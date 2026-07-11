@@ -2,13 +2,15 @@
 import '../styles/global.css';
 import SkipLink from '../components/SkipLink.astro';
 import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 import { siteConfig } from '../config/site.config';
 
 interface Props {
   title?: string;
+  noindex?: boolean;
 }
 
-const { title } = Astro.props;
+const { title, noindex = false } = Astro.props;
 const pageTitle = title ?? siteConfig.metadata.title;
 ---
 
@@ -17,11 +19,13 @@ const pageTitle = title ?? siteConfig.metadata.title;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {noindex && <meta name="robots" content="noindex" />}
     <title>{pageTitle}</title>
   </head>
   <body>
     <SkipLink />
     <SiteHeader />
     <slot />
+    <SiteFooter />
   </body>
 </html>

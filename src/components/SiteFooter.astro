@@ -1,0 +1,276 @@
+---
+import Container from './ui/Container.astro';
+import NavLink from './NavLink.astro';
+import { siteConfig } from '../config/site.config';
+import { isConfiguredValue } from '../utils/config-value';
+import { buildWhatsAppUrl } from '../utils/whatsapp';
+
+const { navigation, primaryCta, whatsapp, footer } = siteConfig;
+const {
+  professionalName,
+  professionalTitle,
+  email,
+  phone,
+  region,
+  privacyPolicyPath,
+  cookiesPolicyPath,
+  integratedCareNotice,
+} = footer;
+
+const showTitle = isConfiguredValue(professionalTitle);
+const showEmail = isConfiguredValue(email);
+const showPhone = isConfiguredValue(phone);
+const showRegion = isConfiguredValue(region);
+const showCookiesLink = Boolean(cookiesPolicyPath?.trim());
+const whatsappUrl = buildWhatsAppUrl(whatsapp);
+const primaryCtaProps = primaryCta.external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+---
+
+<footer class="site-footer">
+  <Container class="site-footer__inner">
+    <div class="site-footer__grid">
+      <div class="site-footer__column">
+        <h2 class="site-footer__heading">Identificação</h2>
+        <p class="site-footer__identity-name">{professionalName}</p>
+        {showTitle && <p class="site-footer__identity-title">{professionalTitle}</p>}
+      </div>
+
+      <nav class="site-footer__column" aria-label="Navegação do rodapé">
+        <h2 class="site-footer__heading">Navegação</h2>
+        <ul class="site-footer__link-list">
+          {
+            navigation.map((item) => (
+              <li>
+                <NavLink
+                  href={item.href}
+                  label={item.label}
+                  variant="inline"
+                  class="site-footer__link"
+                />
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <nav class="site-footer__column" aria-label="Informações legais">
+        <h2 class="site-footer__heading">Legal</h2>
+        <ul class="site-footer__link-list">
+          <li>
+            <a href={privacyPolicyPath} class="site-footer__link">Política de privacidade</a>
+          </li>
+          {
+            showCookiesLink && (
+              <li>
+                <a href={cookiesPolicyPath} class="site-footer__link">
+                  Política de cookies
+                </a>
+              </li>
+            )
+          }
+        </ul>
+      </nav>
+
+      <div class="site-footer__column">
+        <h2 class="site-footer__heading">Contato</h2>
+        <ul class="site-footer__contact-list">
+          {
+            showEmail && (
+              <li>
+                <a href={`mailto:${email}`} class="site-footer__link">
+                  {email}
+                </a>
+              </li>
+            )
+          }
+          {
+            showPhone && (
+              <li>
+                <a href={`tel:${phone.replace(/\s/g, '')}`} class="site-footer__link">
+                  {phone}
+                </a>
+              </li>
+            )
+          }
+          {
+            whatsappUrl && (
+              <li>
+                <a
+                  href={whatsappUrl}
+                  class="site-footer__link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-cta-location="footer"
+                  data-cta-type="whatsapp"
+                >
+                  WhatsApp
+                </a>
+              </li>
+            )
+          }
+          {showRegion && <li class="site-footer__region">{region}</li>}
+        </ul>
+      </div>
+    </div>
+
+    <div class="site-footer__meta">
+      <p class="site-footer__booking">
+        <a
+          href={primaryCta.href}
+          class="site-footer__booking-link"
+          data-cta-location="footer"
+          data-cta-type="text"
+          {...primaryCtaProps}
+        >
+          {primaryCta.label}
+        </a>
+      </p>
+
+      <p class="site-footer__notice">{integratedCareNotice}</p>
+    </div>
+  </Container>
+</footer>
+
+<style>
+  .site-footer {
+    background-color: var(--color-surface-warm);
+    color: var(--color-text-primary);
+    padding-block: 3rem;
+  }
+
+  .site-footer__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .site-footer__grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .site-footer__column {
+    min-width: 0;
+  }
+
+  .site-footer__heading {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-body);
+    font-size: var(--font-size-small);
+    font-weight: 600;
+    line-height: var(--line-height-heading);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-brand-primary);
+  }
+
+  .site-footer__identity-name {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: var(--font-size-h3);
+    font-weight: 600;
+    line-height: var(--line-height-heading);
+    color: var(--color-brand-primary);
+  }
+
+  .site-footer__identity-title {
+    margin: 0.375rem 0 0;
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+    color: var(--color-text-primary);
+  }
+
+  .site-footer__link-list,
+  .site-footer__contact-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-footer__link-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .site-footer__contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .site-footer__link,
+  .site-footer__booking-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    touch-action: manipulation;
+  }
+
+  .site-footer__link:hover,
+  .site-footer__booking-link:hover {
+    color: var(--color-brand-primary);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .site-footer__link:focus-visible,
+  .site-footer__booking-link:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+  }
+
+  .site-footer__region {
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
+    color: var(--color-text-primary);
+  }
+
+  .site-footer :global(.site-footer__link.nav-link) {
+    min-height: 2.75rem;
+    padding-inline: 0;
+  }
+
+  .site-footer__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-block-start: 1rem;
+    border-block-start: 1px solid color-mix(in srgb, var(--color-accent-sage) 50%, transparent);
+  }
+
+  .site-footer__booking {
+    margin: 0;
+  }
+
+  .site-footer__booking-link {
+    font-weight: 500;
+    color: var(--color-brand-primary);
+  }
+
+  .site-footer__notice {
+    margin: 0;
+    font-size: var(--font-size-small);
+    line-height: var(--line-height-body);
+    color: var(--color-text-primary);
+    text-wrap: pretty;
+  }
+
+  @media (min-width: 768px) {
+    .site-footer {
+      padding-block: 4rem;
+    }
+
+    .site-footer__grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 2rem;
+    }
+  }
+</style>

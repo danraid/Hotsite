@@ -35,3 +35,21 @@ describe('siteConfig.siteName', () => {
     expect(siteConfig.siteName).toBe('Janaína Hollanda');
   });
 });
+
+describe('siteConfig.footer', () => {
+  it('expõe identificação profissional sem titulação inventada', () => {
+    expect(siteConfig.footer.professionalName).toBe('Janaína Hollanda');
+    expect(siteConfig.footer.professionalTitle).toBe('');
+  });
+
+  it('define rota de privacidade e aviso integrado', () => {
+    expect(siteConfig.footer.privacyPolicyPath).toBe('/privacidade');
+    expect(siteConfig.footer.integratedCareNotice.length).toBeGreaterThan(0);
+    expect(siteConfig.footer.integratedCareNotice).toContain('cuidado integrado');
+  });
+
+  it('não preenche contato antes da verificação do cliente', () => {
+    expect(siteConfig.footer.email).toBe('');
+    expect(siteConfig.footer.phone).toBe('');
+  });
+});
