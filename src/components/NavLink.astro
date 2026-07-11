@@ -1,0 +1,59 @@
+---
+interface Props {
+  href: string;
+  label: string;
+  variant?: 'inline' | 'drawer';
+  class?: string;
+}
+
+const { href, label, variant = 'inline', class: className } = Astro.props;
+---
+
+<a
+  href={href}
+  class:list={['nav-link', `nav-link--${variant}`, className]}
+  data-nav-label={label}
+>
+  {label}
+</a>
+
+<style>
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.5rem 0.75rem;
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    border-radius: 0.25rem;
+    touch-action: manipulation;
+  }
+
+  .nav-link:hover {
+    color: var(--color-brand-primary);
+  }
+
+  .nav-link:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: 2px;
+  }
+
+  .nav-link--inline {
+    padding-inline: 0.5rem;
+  }
+
+  .nav-link--drawer {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-size: var(--font-size-body);
+    border-block-end: 1px solid color-mix(in srgb, var(--color-accent-sage) 40%, transparent);
+  }
+
+  .nav-link--drawer:last-child {
+    border-block-end: none;
+  }
+</style>

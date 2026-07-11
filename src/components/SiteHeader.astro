@@ -1,0 +1,327 @@
+---
+import Container from './ui/Container.astro';
+import NavLink from './NavLink.astro';
+import PrimaryButton from './ui/PrimaryButton.astro';
+import { siteConfig } from '../config/site.config';
+
+const { siteName, navigation, primaryCta } = siteConfig;
+---
+
+<header class="site-header">
+  <Container class="site-header__inner">
+    <a href="#hero" class="site-header__brand">
+      {siteName}
+    </a>
+
+    <nav class="site-header__nav" aria-label="Principal">
+      <ul class="site-header__nav-list">
+        {
+          navigation.map((item) => (
+            <li>
+              <NavLink href={item.href} label={item.label} variant="inline" />
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <PrimaryButton
+        href={primaryCta.href}
+        label={primaryCta.label}
+        external={primaryCta.external}
+        ctaLocation="header"
+        class="site-header__cta"
+      />
+
+      <button
+        type="button"
+        class="site-header__menu-toggle"
+        id="menu-toggle"
+        aria-expanded="false"
+        aria-controls="mobile-nav-drawer"
+        aria-label="Abrir menu"
+      >
+        <span class="site-header__menu-icon" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+    </div>
+  </Container>
+</header>
+
+<div id="mobile-nav-overlay" class="mobile-nav-overlay" hidden></div>
+
+<div
+  id="mobile-nav-drawer"
+  class="mobile-nav-drawer"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Menu de navegação"
+  hidden
+>
+  <nav class="mobile-nav-drawer__nav" aria-label="Principal">
+    {
+      navigation.map((item) => (
+        <NavLink href={item.href} label={item.label} variant="drawer" />
+      ))
+    }
+  </nav>
+</div>
+
+<script>
+  function initMobileNav() {
+    const menuBtn = document.getElementById('menu-toggle');
+    const drawer = document.getElementById('mobile-nav-drawer');
+    const overlay = document.getElementById('mobile-nav-overlay');
+
+    if (!menuBtn || !drawer || !overlay) return;
+
+    const menuToggle = menuBtn;
+    const menuDrawer = drawer;
+    const menuOverlay = overlay;
+
+    let previouslyFocused: HTMLElement | null = null;
+    const focusableSelector =
+      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+    function getFocusableElements(): HTMLElement[] {
+      return Array.from(menuDrawer.querySelectorAll<HTMLElement>(focusableSelector));
+    }
+
+    function getBackgroundElements(): Element[] {
+      return Array.from(document.body.children).filter(
+        (element) =>
+          !element.matches(
+            'header.site-header, .mobile-nav-overlay, .mobile-nav-drawer, script',
+          ),
+      );
+    }
+
+    function setBackgroundInert(inert: boolean) {
+      getBackgroundElements().forEach((element) => {
+        if (inert) {
+          element.setAttribute('inert', '');
+        } else {
+          element.removeAttribute('inert');
+        }
+      });
+    }
+
+    function openMenu() {
+      previouslyFocused = document.activeElement as HTMLElement | null;
+      menuDrawer.hidden = false;
+      menuOverlay.hidden = false;
+      menuToggle.setAttribute('aria-expanded', 'true');
+      menuToggle.setAttribute('aria-label', 'Fechar menu');
+      document.body.style.overflow = 'hidden';
+      setBackgroundInert(true);
+      getFocusableElements()[0]?.focus();
+    }
+
+    function closeMenu() {
+      menuDrawer.hidden = true;
+      menuOverlay.hidden = true;
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.setAttribute('aria-label', 'Abrir menu');
+      document.body.style.overflow = '';
+      setBackgroundInert(false);
+      previouslyFocused?.focus();
+    }
+
+    menuToggle.addEventListener('click', () => {
+      const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
+      if (isOpen) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+
+    menuOverlay.addEventListener('click', closeMenu);
+
+    menuDrawer.addEventListener('click', (event) => {
+      if ((event.target as Element).closest('a')) {
+        closeMenu();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (menuDrawer.hidden) return;
+
+      if (event.key === 'Escape') {
+        closeMenu();
+        return;
+      }
+
+      if (event.key !== 'Tab') return;
+
+      const focusable = getFocusableElements();
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+  }
+
+  initMobileNav();
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background-color: var(--color-background-primary);
+    border-block-end: 1px solid color-mix(in srgb, var(--color-accent-sage) 50%, transparent);
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: var(--header-height);
+    padding-block: 0.75rem;
+  }
+
+  .site-header__brand {
+    flex-shrink: 0;
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--color-brand-primary);
+    text-decoration: none;
+  }
+
+  .site-header__brand:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+  }
+
+  .site-header__nav {
+    display: none;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .site-header__nav-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-inline-start: auto;
+  }
+
+  .site-header__cta {
+    min-height: 2.75rem;
+    padding: 0.5rem 1rem;
+    font-size: var(--font-size-small);
+  }
+
+  .site-header__menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    padding: 0;
+    color: var(--color-brand-primary);
+    background: transparent;
+    border: var(--focus-ring-width) solid transparent;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .site-header__menu-toggle:focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: 2px;
+  }
+
+  .site-header__menu-icon {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3125rem;
+    width: 1.25rem;
+  }
+
+  .site-header__menu-icon span {
+    display: block;
+    height: 2px;
+    background-color: currentColor;
+    border-radius: 1px;
+  }
+
+  .mobile-nav-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-mobile-nav);
+    background-color: color-mix(in srgb, var(--color-brand-primary) 30%, transparent);
+  }
+
+  .mobile-nav-overlay[hidden] {
+    display: none;
+  }
+
+  .mobile-nav-drawer {
+    position: fixed;
+    inset-block-start: var(--header-height);
+    inset-inline: 0;
+    z-index: calc(var(--z-mobile-nav) + 1);
+    max-height: calc(100dvh - var(--header-height));
+    overflow-y: auto;
+    background-color: var(--color-background-primary);
+    border-block-end: 1px solid color-mix(in srgb, var(--color-accent-sage) 50%, transparent);
+    box-shadow: 0 0.5rem 1.5rem color-mix(in srgb, var(--color-brand-primary) 12%, transparent);
+  }
+
+  .mobile-nav-drawer[hidden] {
+    display: none;
+  }
+
+  .mobile-nav-drawer__nav {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 0;
+  }
+
+  @media (min-width: 768px) {
+    .site-header__nav {
+      display: flex;
+    }
+
+    .site-header__menu-toggle {
+      display: none;
+    }
+
+    .site-header__cta {
+      padding: 0.625rem 1.5rem;
+      font-size: var(--font-size-body);
+    }
+
+    .site-header__brand {
+      font-size: 1.5rem;
+    }
+  }
+</style>
