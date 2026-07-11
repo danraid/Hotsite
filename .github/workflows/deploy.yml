@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - develop
+      - spec-010-footer-legal
 
 jobs:
   deploy:
