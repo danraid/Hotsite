@@ -1,0 +1,11 @@
+schema_version: "1.0"
+status: ready
+created: 2026-07-11
+updated: 2026-07-11
+design_doc: docs/designs/2026-07-11-http-security-headers-design.md
+depends_on:
+  - SPEC-001-foundation
+  - SPEC-012-integrations
+coordination:
+  blast_radius: medium
+  parallel_safe: true

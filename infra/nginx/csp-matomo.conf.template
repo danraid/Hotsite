@@ -1,0 +1,5 @@
+# CSP for analytics.provider: matomo (SPEC-013 / SEC-002).
+# Replace MATOMO_ORIGIN with the Matomo instance origin (scheme + host, no trailing slash).
+# Example: https://analytics.example.com
+
+add_header Content-Security-Policy "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; script-src 'self' 'unsafe-inline' MATOMO_ORIGIN; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: MATOMO_ORIGIN; connect-src 'self' MATOMO_ORIGIN; upgrade-insecure-requests" always;
