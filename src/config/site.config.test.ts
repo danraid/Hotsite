@@ -28,6 +28,17 @@ describe('siteConfig.primaryCta', () => {
     expect(siteConfig.primaryCta.href.length).toBeGreaterThan(0);
     expect(typeof siteConfig.primaryCta.external).toBe('boolean');
   });
+
+  it('espelha booking na mesma referência de primaryCta', () => {
+    expect(siteConfig.booking).toBe(siteConfig.primaryCta);
+  });
+});
+
+describe('siteConfig.analytics', () => {
+  it('usa provider none por padrão até decisão do owner', () => {
+    expect(siteConfig.analytics.provider).toBe('none');
+    expect(siteConfig.analytics.requiresConsent).toBe(true);
+  });
 });
 
 describe('siteConfig.siteName', () => {
